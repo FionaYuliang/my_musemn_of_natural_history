@@ -21,6 +21,14 @@ class welcome extends Controller
         return view('/index/welcome', ['article_title_list' => $article_title_list]);
     }
 
+    /**
+     * @param array $data
+     * @param string $message
+     * @param string $action => 常用action： success / alert / redirect 扩展 => login
+     * @param int $code
+     * @param string $redirect
+     * @return static
+     */
     public function ajaxShowResult($data = [], $message = '', $action = 'success', $code = 0, $redirect = '')
     {
         $response = [
@@ -72,7 +80,10 @@ class welcome extends Controller
         $password = $request->query->get('password');
         $message = '';
         if (empty($email) || empty($password)) {
-            return view('register');
+//            return $this->ajaxShowResult([]);
+
+            return $this->ajaxShowError('email/password不能为空');
+//            return view('register');
         }
 
         $m_article = new MArticle();
@@ -82,7 +93,7 @@ class welcome extends Controller
             $message = '此邮箱已经注册过账号,选择：1.去登录 2.换个邮箱试试 3.找回密码';
             return view('iforget', ['message' => $message]);
         } else {
-            return RedirectResponse::create('/index/welcome');
+            return $this->ajaxShowResult([], '注册成功', 'redirect', '', '/index/welcome'); // RedirectResponse::create('/index/welcome');
         }
     }
 }

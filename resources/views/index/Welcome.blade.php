@@ -460,14 +460,15 @@
     }*/
     function submitAccount()
     {
-        let email = $("[name='email']".val())
-        let password = $("[name='password']".val())
+        let email = $("[name='email']").val()
+        let password = $("[name='password']").val()
 
         let get_data = {
             email:email,
             password:password,
         }
-
+        console.log('get_data =>')
+        console.log(get_data)
         $.get('/register',get_data,function(response){
           if(response.action === 'success'){
               location.href = '/personal_home'
