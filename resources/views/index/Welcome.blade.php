@@ -128,6 +128,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+
                 <label class="control-label">请输入您的邮箱</label>
                 <input class="form-control" id="message-text" type="email" name="email" placeholder="Email">
                 </div>
