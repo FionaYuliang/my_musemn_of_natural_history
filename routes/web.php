@@ -12,4 +12,5 @@
 */
 Route::any('/','Welcome@showArticleTitle');
 Route::any('/register','Welcome@register');
-Route::view('/personal_home/messageBoard','personal_home/messageBoard');
+Route::any('/comment','Welcome@comment');
+Route::any('/personal_home/commentBoard','Welcome@showComment');

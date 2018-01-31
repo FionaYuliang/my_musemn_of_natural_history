@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Model\welcome as MArticle;
+use App\Model\welcome as Mdata;
 
 class welcome extends Controller
 {
@@ -16,7 +16,7 @@ class welcome extends Controller
 
     public function showArticleTitle(Request $request)
     {
-        $m_article = new MArticle();
+        $m_article = new Mdata();
         $article_title_list = $m_article->getArticleTitleList();
         return view('/index/welcome', ['article_title_list' => $article_title_list]);
     }
@@ -43,7 +43,7 @@ class welcome extends Controller
 
     public function ajaxShowError($message = '', $code = 10000, $action = 'alert', $data = [], $redirect = '')
     {
-        return $this->ajaxShowResult($data, $message, $action, $code, $redirect);
+        return $this->ajaxShowResult($message, $action, $code,$data, $redirect);
     }
 
     public function ajaxSignin(Request $request)
@@ -60,7 +60,7 @@ class welcome extends Controller
             return $this->ajaxShowError($message);
         }
 
-        $m_article = new MArticle();
+        $m_article = new Mdata();
         $correct_password = $m_article->getPassword($email);
         if ($email == false) {
             $message = '此账号不存在，请先去注册';
@@ -80,22 +80,58 @@ class welcome extends Controller
         $password = $request->query->get('password');
         $message = '';
         if (empty($email) || empty($password)) {
-//            return $this->ajaxShowResult([]);
-
             return $this->ajaxShowError('email/password不能为空');
-//            return view('register');
+        }elseif ($email){
+            return $this->ajaxShowResult([],'','success','10001','');
+        }else
+            $m_article = new Mdata();
+            $id = $m_article->createAccocunt($email, $password);
+            return $this->ajaxShowResult([], '注册成功', 'redirect', '', '/index/welcome'); // RedirectResponse::create('/index/welcome');
+    }
+
+    public function addComment(Request $request)
+    {
+        $username = $request->query->get('username');
+        $email = $request->query->get('email');
+        $comment_content = $request->query->get('comment_content');
+        $comment_time = $username->query->get(' ');
+
+        if(empty($username)|| empty($comment_content)){
+            $message_comment = '必填项不能为空';
+            return $this->ajaxShowError($message_comment);
         }
 
-        $m_article = new MArticle();
-        $id = $m_article->add($email, $password);
-
-        if ($email) {
-            $message = '此邮箱已经注册过账号,选择：1.去登录 2.换个邮箱试试 3.找回密码';
-            return view('iforget', ['message' => $message]);
+        $m_comment_content = new Mdata();
+        $is_insert_success = $m_comment_content->insertComment($username,$email,$comment_content,$comment_time);
+        if($is_insert_success){
+            $message_comment = '留言成功';
+            return $this->ajaxShowResult([], $message_comment);
         } else {
-            return $this->ajaxShowResult([], '注册成功', 'redirect', '', '/index/welcome'); // RedirectResponse::create('/index/welcome');
+            $message_comment = '留言失败';
+            return $this->ajaxShowError($message_comment);
         }
     }
+
+     public function showComment(Request $request)
+     {
+        /* 实例化：*/ $m_comment_list = new Mdata();
+        /*从M层获取数据（查询构造器已经写好）：*/ $raw_comment_list = $m_comment_list->getCommentList();
+        /*新建空字符串：*/  $comment_list = [];
+
+         /*循环查找数据,把每一个数据赋给对应的变量，然后把这串放到上一步新建的空字符串中：*/
+        foreach ($raw_comment_list->toArray() as $raw_comment){
+            $comment = [];
+            $comment['username'] = $raw_comment->username;
+            $comment['comment_time'] =  $raw_comment->comment_time;
+            $comment['format_comment_time'] =  date('Y-m-d H:i:s', $raw_comment->comment_time);
+            $comment['comment_content'] = $raw_comment->comment_content;
+            $comment_list[] = $comment;  /*为了web端的循环数据展示 foreach $comment_list as $comment */
+        }
+        /*带着数据返回页面（页面的数据展示方式已经写好）:*/
+        return view('personal_home/commentBoard',['comment_list'=> $comment_list]);
+     }
+
+
 }
 
 
