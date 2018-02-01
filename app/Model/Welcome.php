@@ -35,6 +35,16 @@ class Welcome extends Base
         return $account;
     }
 
+
+    public function getPassword($email)
+    {
+        $passwword = DB::table('account')
+            ->select('password')
+            ->where('email','=',$email)
+            ->value('password');
+
+        return $passwword;
+    }
     /**
      * 插入留言
      * @param string $username 用户名
