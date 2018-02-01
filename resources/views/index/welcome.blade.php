@@ -116,7 +116,7 @@
                 <div class="form-group">
                     <input type="password" placeholder="密码" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-success" onclick="accessToDB">登录</button>
+                <button type="submit" class="btn btn-success" onclick="emailLogin()">登录</button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册
                 </button>
 
@@ -479,9 +479,16 @@
 <script>
 
 
-    /*    function accessToDB() {
-
-        }*/
+    function emailLogin() {
+        $.get('/personal_home/commentBoard',function (response) {
+            switch (response.action){
+                case 'redirect':
+                    alert(response.message);
+                    location.href = response.redirect;
+                    break;
+            }
+        })
+    }
 
     function judgeEmail() {
 
