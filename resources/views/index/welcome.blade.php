@@ -19,13 +19,13 @@
     <style>
 
         .media-left img {
-            height: 40px;
-            width: 40px;
+            height:40px;
+            width:40px;
         }
 
         .carousel-inner img {
-            height：40px;
-            width: 100px;
+            height:40px;
+            width:100px;
         }
 
         .navbar .nav > li:hover .dropdown-menu {
@@ -478,7 +478,6 @@
 </footer>
 <script>
 
-
     function emailLogin() {
         $.get('/personal_home/commentBoard',function (response) {
             switch (response.action){
@@ -522,7 +521,7 @@
                     alert(response.message);
                     break;
             }
-        }
+        })
         return false;
     }
 </script>
