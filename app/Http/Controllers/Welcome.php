@@ -67,7 +67,7 @@ class welcome extends Controller
             return $this->ajaxShowError($message);
         } elseif ($correct_password == $password) {
             setcookie('is_login', true);
-            return $this->ajaxShowResult('', '登录成功', 'redirect', 0, '/home');
+            return $this->ajaxShowResult('', '登录成功', 'redirect', 0, '/personal_home');
         } else
             $message = '密码错误，请重新输入密码';
         return $this->ajaxShowError($message);
@@ -92,9 +92,9 @@ class welcome extends Controller
     public function addComment(Request $request)
     {
         $username = $request->query->get('username');
-        $email = $request->query->get('email');
+        $email = $request->query->get('email', '');
         $comment_content = $request->query->get('comment_content');
-        $comment_time = $username->query->get(' ');
+        $comment_time = $request->query->get('comment_time');
 
         if(empty($username)|| empty($comment_content)){
             $message_comment = '必填项不能为空';

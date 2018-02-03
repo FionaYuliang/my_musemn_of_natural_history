@@ -21,7 +21,7 @@ class Welcome extends Base
     }
 
     /**
-     * y函数要写参数
+     * 函数要写参数
      * @param $email
      * @param $password
      * @return bool
@@ -40,26 +40,27 @@ class Welcome extends Base
     {
         $passwword = DB::table('account')
             ->select('password')
-            ->where('email','=',$email)
+            ->where('email', '=', $email)
             ->value('password');
 
         return $passwword;
     }
+
     /**
      * 插入留言
      * @param string $username 用户名
      * @param string $email 邮箱
-     * @param int $comment_time 评论时间
      * @param string $comment_content 评论内容
+     * @param int $comment_time 评论时间
      * @return bool
      */
-    public function insertComment($username, $email, $comment_time, $comment_content)
+    public function insertComment($username, $email, $comment_content, $comment_time)
     {
         $comment = DB::table('web_comment')->insert([
             'username' => $username,
             'email' => $email,
-            'comment_time' => $comment_time,
             'comment_content' => $comment_content,
+            'comment_time' => $comment_time,
         ]);
         return $comment;
     }
