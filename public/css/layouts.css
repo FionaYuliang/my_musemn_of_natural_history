@@ -1,0 +1,24 @@
+
+.media-left img {
+    height:40px;
+    width:40px;
+}
+
+.carousel-inner img {
+    height:40px;
+    width:100px;
+}
+
+.navbar .nav > li:hover .dropdown-menu {
+    display: block;
+}
+
+footer {
+    display: block;
+    background-color: dimgray;
+
+}
+
+footer a {
+    color: rgb(255, 255, 255);
+}

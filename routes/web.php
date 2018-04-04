@@ -10,7 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::any('/','Welcome@showArticleTitle');
+Route::any('/index/welcome','Welcome@showArticleTitle');
+Route::any('/index/layouts',function(){
+    return view('index.layouts');
+});
 Route::any('/register','Welcome@register');
 Route::any('/comment','Welcome@addComment');
 Route::any('/personal_home/commentBoard','Welcome@showComment');
